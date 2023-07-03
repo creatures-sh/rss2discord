@@ -1,0 +1,28 @@
+{
+  "name": "rss2discord",
+  "version": "1.0.0",
+  "description": "A Discord bot that subscribes to RSS feeds and posts to specific channels in your server.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "db:generate": "drizzle-kit generate:sqlite",
+    "db:push": "drizzle-kit push:sqlite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^8.4.0",
+    "drizzle-orm": "^0.27.0",
+    "fastify": "^4.19.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.4",
+    "@types/node": "^20.3.3",
+    "drizzle-kit": "^0.19.3",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "id": "9d89d05f-69e8-4a5f-9d96-a6e3fc677f31",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "global_metadata": {
+      "name": "global_metadata",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "default_channel": {
+          "name": "default_channel",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "refresh_interval": {
+          "name": "refresh_interval",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 30
+        },
+        "bot_metadata": {
+          "name": "bot_metadata",
+          "type": "blob",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {}
+    }
+  },
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
