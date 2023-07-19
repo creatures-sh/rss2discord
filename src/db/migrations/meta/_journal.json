@@ -8,6 +8,13 @@
       "when": 1688397807143,
       "tag": "0000_wise_phantom_reporter",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1689342974767,
+      "tag": "0001_famous_mandroid",
+      "breakpoints": true
     }
   ]
 }
