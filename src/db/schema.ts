@@ -1,4 +1,3 @@
-import { sql } from 'drizzle-orm';
 import { sqliteTable, text, integer, blob } from 'drizzle-orm/sqlite-core';
 
 export const globalMetadata = sqliteTable('global_metadata', {
@@ -8,6 +7,7 @@ export const globalMetadata = sqliteTable('global_metadata', {
     .default(parseInt(process.env.REFRESH_INTERVAL || '') || 30)
     .notNull(),
   bot_metadata: blob('bot_metadata', { mode: 'json' }),
+  something: text('something'),
 });
 
 export const feeds = sqliteTable('feeds', {
@@ -19,4 +19,5 @@ export const feeds = sqliteTable('feeds', {
   link: text('link'),
   last_item_guid: text('last_item_guid'),
   last_item_pub_date: text('last_item_pub_date'),
+  channel: text('channel'),
 });

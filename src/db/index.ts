@@ -13,7 +13,7 @@ export const db: BetterSQLite3Database = drizzle(sqlite, {
   logger: true,
 });
 
-migrate(db, { migrationsFolder: 'src/db/migrations' });
+void migrate(db, { migrationsFolder: 'src/db/migrations' });
 
 // DB SEED
 db.transaction(async (tx) => {

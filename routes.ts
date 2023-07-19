@@ -44,6 +44,7 @@ export const putDefaultChannel: RouteHandler<{ Body: DefaultChannelBody }> = (
 
 interface SubscribeBody {
   url: string;
+  channel?: string;
 }
 
 export const postSubscribe: RouteHandler<{ Body: SubscribeBody }> = async (
@@ -51,6 +52,7 @@ export const postSubscribe: RouteHandler<{ Body: SubscribeBody }> = async (
   response
 ) => {
   const url = request.body?.url;
+  const channel = request.body?.channel;
 
   if (!url) {
     response.status(400);
@@ -61,10 +63,12 @@ export const postSubscribe: RouteHandler<{ Body: SubscribeBody }> = async (
 
   try {
     const listOfUrls = await asyncFindFeed(url);
-    console.log(listOfUrls);
     if (listOfUrls.length > 1) {
       response.status(400);
-      return { message: 'Multiple feeds found; Please choose one.', feeds: listOfUrls }
+      return {
+        message: 'Multiple feeds found; Please choose one.',
+        feeds: listOfUrls,
+      };
     }
 
     feedUrl = listOfUrls[0];
@@ -73,24 +77,63 @@ export const postSubscribe: RouteHandler<{ Body: SubscribeBody }> = async (
     return { message: err };
   }
 
-  // URL, ID
+  const existingSub = db
+    .select()
+    .from(feeds)
+    .where(eq(feeds.feed_url, feedUrl))
+    .get();
+
+  if (existingSub) {
+    response.status(409);
+    return { message: 'A subscription for this feed already exists.' };
+  }
+
   const feed_results = await extract(feedUrl);
-  
-  let { title, description, link, entries } = feed_results;
-  // TITLE, DESCRIPTION, LINK
+  const { title, description, link, entries } = feed_results;
 
-  const last_entry = entries?.sort((a ,b) => new Date(b.published || '').getTime() - new Date(a.published || '').getMinutes())[0];
-  // LAST ITEM GUID, LAST ITEM PUB DATE
-  console.log(last_entry)
+  if (!entries || entries.length === 0) {
+    db.insert(feeds)
+      .values({
+        feed_url: feedUrl,
+        page_url: url,
+        title,
+        description,
+        link,
+        channel,
+      })
+      .get();
+    response.status(204);
+    return {
+      message: "The provided feed exists, but it doesn't contain any items.",
+    };
+  }
 
-  // const { published } = last_entry;
+  const hasPublishedDates = entries.every(
+    ({ published }) => published && new Date(published)
+  );
 
-  const normalizedPublish = last_entry?.published ? (last_entry?.published as any as string) : new Date().toISOString();
-  console.log(normalizedPublish);
+  const last_entry = hasPublishedDates
+    ? entries.sort(
+        (a, b) =>
+          new Date(b.published!).getTime() - new Date(a.published!).getMinutes()
+      )[0]
+    : entries[0];
+
+  const normalizedPublish = last_entry?.published
+    ? (last_entry?.published as any as string)
+    : new Date().toISOString();
 
   const { last_item_guid } = db
     .insert(feeds)
-    .values({ feed_url: feedUrl, page_url: url, title, description, link, last_item_guid: last_entry?.id, last_item_pub_date: normalizedPublish })
+    .values({
+      feed_url: feedUrl,
+      page_url: url,
+      title,
+      description,
+      link,
+      last_item_guid: last_entry?.id,
+      last_item_pub_date: normalizedPublish,
+    })
     .returning({ last_item_guid: feeds.last_item_guid })
     .get();
 
@@ -99,7 +142,4 @@ export const postSubscribe: RouteHandler<{ Body: SubscribeBody }> = async (
   return {
     lastEntry: entry,
   };
-
-  // return { message: 'success' };
-  // TODO: Got the URL, write to DB
 };

@@ -17,14 +17,14 @@
   "dependencies": {
     "@extractus/feed-extractor": "^6.2.4",
     "better-sqlite3": "^8.4.0",
-    "drizzle-orm": "^0.27.0",
+    "drizzle-orm": "^0.27.2",
     "fastify": "^4.19.1",
     "feedrat": "^0.4.12"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.4",
     "@types/node": "^20.3.3",
-    "drizzle-kit": "^0.19.3",
+    "drizzle-kit": "^0.19.8",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"
   }
