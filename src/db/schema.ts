@@ -21,8 +21,12 @@ export const feeds = sqliteTable('feeds', {
   description: text('description'),
   // [FEED] the <link> property from the feed
   link: text('link'),
-  last_item_guid: text('last_item_guid'),
-  last_item_pub_date: text('last_item_pub_date'),
   // [USER] user-submitted channel for this feed
   channel: text('channel'),
+});
+
+export const entries = sqliteTable('entries', {
+  id: integer('id').primaryKey({ autoIncrement: true }).notNull(),
+  entry_id: text('entry_id').notNull(),
+  feed: integer('feed'),
 });

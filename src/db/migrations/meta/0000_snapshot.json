@@ -1,9 +1,39 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "7a343bbc-6263-437c-ae7b-b7d1508293a3",
+  "id": "9a52e450-1287-40fd-a654-92bdb1ca96f3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "entries": {
+      "name": "entries",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "entry_id": {
+          "name": "entry_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "feed": {
+          "name": "feed",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "feeds": {
       "name": "feeds",
       "columns": {
@@ -44,20 +74,6 @@
         },
         "link": {
           "name": "link",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "last_item_guid": {
-          "name": "last_item_guid",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "last_item_pub_date": {
-          "name": "last_item_pub_date",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

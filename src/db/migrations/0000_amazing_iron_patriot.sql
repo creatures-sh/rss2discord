@@ -1,3 +1,9 @@
+CREATE TABLE `entries` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`entry_id` text NOT NULL,
+	`feed` integer
+);
+--> statement-breakpoint
 CREATE TABLE `feeds` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`feed_url` text NOT NULL,
@@ -5,8 +11,6 @@ CREATE TABLE `feeds` (
 	`title` text,
 	`description` text,
 	`link` text,
-	`last_item_guid` text,
-	`last_item_pub_date` text,
 	`channel` text
 );
 --> statement-breakpoint

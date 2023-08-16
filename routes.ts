@@ -7,7 +7,11 @@ import { extract } from '@extractus/feed-extractor';
 const asyncFindFeed = promisify(findFeed);
 
 import { db } from './src/db';
-import { feeds, globalMetadata } from './src/db/schema';
+import {
+  feeds,
+  globalMetadata,
+  entries as entriesTable,
+} from './src/db/schema';
 
 interface DefaultChannelBody {
   default_channel: string;
@@ -108,22 +112,7 @@ export const postSubscribe: RouteHandler<{ Body: SubscribeBody }> = async (
     };
   }
 
-  const hasPublishedDates = entries.every(
-    ({ published }) => published && new Date(published)
-  );
-
-  const last_entry = hasPublishedDates
-    ? entries.sort(
-        (a, b) =>
-          new Date(b.published!).getTime() - new Date(a.published!).getMinutes()
-      )[0]
-    : entries[0];
-
-  const normalizedPublish = last_entry?.published
-    ? (last_entry?.published as any as string)
-    : new Date().toISOString();
-
-  const { last_item_guid } = db
+  const { id } = db
     .insert(feeds)
     .values({
       feed_url: feedUrl,
@@ -131,16 +120,23 @@ export const postSubscribe: RouteHandler<{ Body: SubscribeBody }> = async (
       title,
       description,
       link,
-      last_item_guid: last_entry?.id,
-      last_item_pub_date: normalizedPublish,
     })
-    .returning({ last_item_guid: feeds.last_item_guid })
+    .returning({ id: feeds.id })
     .get();
 
-  const entry = entries?.find((entry) => entry.id === last_item_guid);
+  await db.transaction(async (tx) => {
+    entries.forEach((entry) => {
+      tx.insert(entriesTable)
+        .values({
+          entry_id: entry.id,
+          feed: id,
+        })
+        .run();
+    });
+  });
 
   return {
-    lastEntry: entry,
+    lastEntry: entries[0],
   };
 };
 
