@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "3d1551b9-b71f-4bea-a335-6c1bd940dfa0",
+  "id": "7a343bbc-6263-437c-ae7b-b7d1508293a3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "feeds": {
@@ -104,13 +104,6 @@
         "bot_metadata": {
           "name": "bot_metadata",
           "type": "blob",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "something": {
-          "name": "something",
-          "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false

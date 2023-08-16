@@ -7,7 +7,6 @@ export const globalMetadata = sqliteTable('global_metadata', {
     .default(parseInt(process.env.REFRESH_INTERVAL || '') || 30)
     .notNull(),
   bot_metadata: blob('bot_metadata', { mode: 'json' }),
-  something: text('something'),
 });
 
 export const feeds = sqliteTable('feeds', {

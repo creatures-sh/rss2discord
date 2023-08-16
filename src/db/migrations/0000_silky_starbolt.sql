@@ -14,6 +14,5 @@ CREATE TABLE `global_metadata` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`default_channel` text,
 	`refresh_interval` integer DEFAULT 30 NOT NULL,
-	`bot_metadata` blob,
-	`something` text
+	`bot_metadata` blob
 );
