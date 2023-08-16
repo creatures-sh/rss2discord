@@ -1,13 +1,11 @@
 import fastify from 'fastify';
-import { postSubscribe, putDefaultChannel } from './routes';
+import { getList, postSubscribe, putDefaultChannel } from './routes';
 
 const server = fastify();
 
-server.get('/ping', async (request, reply) => {
-  return 'pong\n';
-});
 server.put('/default-channel', putDefaultChannel);
 server.post('/subscribe', postSubscribe);
+server.get('/list', getList);
 
 const port = parseInt(process.env.PORT || '') || 8080;
 const host = process.env.HOST || 'localhost';

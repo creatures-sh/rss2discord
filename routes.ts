@@ -143,3 +143,14 @@ export const postSubscribe: RouteHandler<{ Body: SubscribeBody }> = async (
     lastEntry: entry,
   };
 };
+
+export const getList: RouteHandler = async (request, response) => {
+  try {
+    const subscriptions = db.select().from(feeds).all();
+    response.status(200);
+    return { subscriptions };
+  } catch (e) {
+    response.status(200);
+    return { subscriptions: [] };
+  }
+};
